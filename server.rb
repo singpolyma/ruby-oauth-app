@@ -50,7 +50,7 @@ get "/oauth/authorize" do
 end
 
 post "/oauth/authorize" do
-  if request_token = provider.bockend.find_user_request(params[:oauth_token])
+  if request_token = provider.backend.find_user_request(params[:oauth_token])
     if request_token.authorize
       redirect request_token.callback
     else
@@ -72,10 +72,10 @@ use_in_file_templates!
 __END__
 
 @@ authorize
-<h2>You are about to authorize <%= @request_token.consumer.name %> (<%= @request_token.consumer.callback %>)</h2>
+<h2>You are about to authorize (<%= @request_token.consumer.callback %>)</h2>
 <form action="/oauth/authorize" method="post">
   <p>
-    <input id="oauth_token" name="oauth_token" type="hidden" value="<%= @request_token.shared %>" />
+    <input id="oauth_token" name="oauth_token" type="hidden" value="<%= @request_token.shared_key %>" />
   </p>
 
   <p>
