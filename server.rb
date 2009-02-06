@@ -4,7 +4,8 @@ require 'sinatra'
 require 'oauth/request_proxy/rack_request'
 require File.dirname(__FILE__) + '/../oauth_provider/lib/oauth_provider'
 
-provider = OAuthProvider::create(:sqlite3, 'store.sqlite3')
+open('PASS').read.split(/\n/)
+provider = OAuthProvider::create(:mysql, config[0], config[1], config[2], config[3])
 begin
 	provider.add_consumer('http://google.com', OAuthProvider::Token.new('key123', 'sekret'))
 rescue Exception
@@ -49,6 +50,7 @@ get "/oauth/authorize" do
   end
 end
 
+=begin
 post "/oauth/authorize" do
   if request_token = provider.backend.find_user_request(params[:oauth_token])
     if request_token.authorize
@@ -60,13 +62,15 @@ post "/oauth/authorize" do
     raise Sinatra::NotFound, "No such request token"
   end
 end
+=end
 
 # Example protected resource
 get "/stove" do
-  access_token = provider.verify_access(request)
-  "CAN HAS STOVE FOR #{access_token.consumer.name}"
+  access_token = provider.confirm_access(request)
+  "CAN HAS STOVE FOR #{access_token.consumer.inspect}"
 end
 
+=begin
 use_in_file_templates!
 
 __END__
@@ -82,3 +86,4 @@ __END__
     <input name="commit" type="submit" value="Activate" />
   </p>
 </form>
+=end
