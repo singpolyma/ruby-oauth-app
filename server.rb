@@ -4,7 +4,7 @@ require 'sinatra'
 require 'oauth/request_proxy/rack_request'
 require File.dirname(__FILE__) + '/../oauth_provider/lib/oauth_provider'
 
-open('PASS').read.split(/\n/)
+config = open('PASS').read.split(/\n/)
 provider = OAuthProvider::create(:mysql, config[0], config[1], config[2], config[3])
 begin
 	provider.add_consumer('http://google.com', OAuthProvider::Token.new('key123', 'sekret'))
