@@ -4,7 +4,7 @@ require 'rubygems'
 require  'oauth/consumer'
 
 @consumer = OAuth::Consumer.new('key123', 'sekret', {
-	:site => 'http://localhost:4567',
+	:site => 'http://csclub.uwaterloo.ca:4567',
 	:scheme => :header,
 	:http_method => :get,
 	:request_token_path => '/oauth/request_token',
